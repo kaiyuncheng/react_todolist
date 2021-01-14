@@ -15,13 +15,8 @@ const TodoItem = ({
       <div className="task-item-checked">
         <span className="icon icon-checked" onClick={handleIsDone(todo.id)} />
       </div>
-      <div className="task-item-body">
-        <span
-          className="task-item-body-text"
-          onDoubleClick={handleEditable(todo.id)}
-        >
-          {todo.title}
-        </span>
+      <div className="task-item-body" onDoubleClick={handleEditable(todo.id)}>
+        <span className="task-item-body-text">{todo.title}</span>
         <input
           className="task-item-body-input"
           type="text"
