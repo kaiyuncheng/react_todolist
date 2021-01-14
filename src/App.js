@@ -116,8 +116,6 @@ function App() {
           }
         });
       });
-
-      setInputValue('');
     }
   };
 
@@ -134,9 +132,7 @@ function App() {
   };
 
   const handleDeleteAll = () => {
-    setTodos(prevTodos => {
-      return prevTodos = [];
-    });
+    setTodos([]);
   };
 
   return (
