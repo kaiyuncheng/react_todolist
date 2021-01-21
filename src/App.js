@@ -11,26 +11,26 @@ let defaultTodos = [
     id: uuidV4(),
     title: 'Eat',
     isDone: false,
-    editable: false,
+    isEdit: false,
   },
   {
     id: uuidV4(),
     title: 'Sleep',
     isDone: false,
-    editable: false,
+    isEdit: false,
   },
   {
     id: uuidV4(),
     title: 'Study',
     isDone: true,
-    editable: false,
+    isEdit: false,
   },
 ];
 
 function App() {
   const [todos, setTodos] = useState(defaultTodos);
   const [inputValue, setInputValue] = useState('');
-  const [inputUpdate, setInputUpdate] = useState('');
+  
 
   const numOfRemaining = todos.filter(todo => !todo.isDone).length;
 
@@ -46,7 +46,7 @@ function App() {
           id: uuidV4(),
           title: inputValue,
           isDone: false,
-          editable: false,
+          isEdit: false,
         },
       ];
     });
@@ -56,7 +56,6 @@ function App() {
 
   const handleKeyUpAdd = (e) => {
     if (inputValue.length && e.keyCode === 13) {
-      e.preventDefault();
       handleAdd();
     }
   };
@@ -76,47 +75,46 @@ function App() {
     });
   };
 
-  const handleInputUpdate = e => {
-    setInputUpdate(e.target.value);
-  };
-
-  const handleEditable = id => () => {
-
+  const handleIsEdit = ({id, isEdit}) => () => {
     setTodos(prevTodos => {
       return prevTodos.map(todo => {
-        if (todo.id === id) {
-          setInputUpdate(todo.title);
-          return {
-            ...todo,
-            editable: !todo.editable,
-          };
-        } else {
-          return {
-            ...todo,
-            editable: false,
-          };
+        if (todo.id !== id) {
+          return todo;
         }
+        return { ...todo, isEdit };
       });
     });
-
   };
-  const handleEditDone = id => (e) => {
-    if (inputUpdate.length && e.keyCode === 13) {
-      e.preventDefault();
-      setTodos(prevTodos => {
-        return prevTodos.map(todo => {
-          if (todo.id !== id) {
-            return todo;
-          } else {
-            return {
-              ...todo,
-              title: inputUpdate,
-              editable: false,
-            };
-          }
-        });
-      });
-    }
+  // const handleEditDone = id => (e) => {
+  //   if (inputUpdate.length && e.keyCode === 13) {
+  //     e.preventDefault();
+  //     setTodos(prevTodos => {
+  //       return prevTodos.map(todo => {
+  //         if (todo.id !== id) {
+  //           return todo;
+  //         } else {
+  //           return {
+  //             ...todo,
+  //             title: inputUpdate,
+  //             editable: false,
+  //           };
+  //         }
+  //       });
+  //     });
+  //   }
+  // };
+
+  const handleEditDone = payload => {
+    const { id, title } = payload;
+
+    setTodos(prevTodos =>
+      prevTodos.map(todo => {
+        if (todo.id !== id) {
+          return todo;
+        }
+        return { ...todo, title, isEdit: false };
+      }),
+    );
   };
 
   const handleDelete = id => () =>{
@@ -148,9 +146,7 @@ function App() {
         todos={todos}
         handleIsDone={handleIsDone}
         handleDelete={handleDelete}
-        inputUpdate={inputUpdate}
-        handleInputUpdate={handleInputUpdate}
-        handleEditable={handleEditable}
+        handleIsEdit={handleIsEdit}
         handleEditDone={handleEditDone}
       />
       <Footer

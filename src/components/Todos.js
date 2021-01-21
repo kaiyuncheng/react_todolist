@@ -4,9 +4,7 @@ const Todos = ({
   todos,
   handleIsDone,
   handleDelete,
-  inputUpdate,
-  handleInputUpdate,
-  handleEditable,
+  handleIsEdit,
   handleEditDone,
 }) => {
   return (
@@ -18,9 +16,7 @@ const Todos = ({
             todo={todo}
             handleIsDone={handleIsDone}
             handleDelete={handleDelete}
-            inputUpdate={inputUpdate}
-            handleInputUpdate={handleInputUpdate}
-            handleEditable={handleEditable}
+            handleIsEdit={handleIsEdit}
             handleEditDone={handleEditDone}
           />
         );
