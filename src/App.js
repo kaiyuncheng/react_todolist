@@ -1,10 +1,11 @@
 import './App.scss';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import AddTodo from './components/AddTodo';
 import Todos from './components/Todos';
 import { v4 as uuidV4 } from 'uuid';
+import { getTodos, createTodo, deleteTodo, patchTodo } from './api/todo';
 
 let defaultTodos = [
   {
@@ -30,9 +31,19 @@ let defaultTodos = [
 function App() {
   const [todos, setTodos] = useState(defaultTodos);
   const [inputValue, setInputValue] = useState('');
-  
 
   const numOfRemaining = todos.filter(todo => !todo.isDone).length;
+
+  useEffect(()=>{
+    // getTodos().then((data)=>console.log('data', data));
+
+
+    createTodo().then((data)=>console.log('data', data));
+
+    getTodos().then(data => console.log('data', data));
+
+    getTodos().then(data => console.log('data', data));
+  },[]);
 
   const handleInputChange = e => {
     setInputValue(e.target.value);
